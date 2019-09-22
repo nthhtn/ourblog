@@ -6,14 +6,30 @@ module.exports = (sequelize, DataTypes) => {
 			primaryKey: true,
 			defaultValue: DataTypes.UUIDV4
 		},
-		email: DataTypes.STRING,
-		username: DataTypes.STRING,
-		password: DataTypes.STRING,
-		lastPost: DataTypes.DATE
+		email: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
+		},
+		username: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
+		},
+		salt: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
+		},
+		password: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			unique: true
+		}
 	});
 
 	User.associate = (models) => {
-		models.User.hasMany(models.Post, { foreignKey: 'AuthorId' });
+		models.User.hasMany(models.Post, { foreignKey: 'authorId' });
 	};
 
 	return User;

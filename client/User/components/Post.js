@@ -15,11 +15,10 @@ class Post extends Component {
 	createPost() {
 		const id = Date.now();
 		const newpost = Object.assign({}, {
-			id,
 			title: `Posted at ${id}`,
 			content: `This is a post created at ${id}`,
-			category: 1,
-			author: 'user'
+			categoryId: 1,
+			authorId: 'c179b4c7-f7cf-4600-be18-da83f3d28b77'
 		});
 		self.props.dispatch(createPost(newpost));
 	}

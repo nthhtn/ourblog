@@ -33,7 +33,7 @@ export default class Sidebar extends Component {
 									</Link>
 								</li>
 								<li className="nav-main-item">
-									<Link className="nav-main-link active" to="/posts">
+									<Link className="nav-main-link active" to="/dashboard/posts">
 										<i className="nav-main-link-icon si si-docs"></i>
 										<span className="nav-main-link-name">Bài viết</span>
 									</Link>

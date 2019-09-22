@@ -22,11 +22,12 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 
-import router from './server/routes/index';
+require('./server/routes')(app);
 
-app.use(router);
-
-db.sequelize.sync({ force: true }).then(() => {
+const syncOptions = {};
+// const syncOptions = { force: true };
+db.sequelize.sync(syncOptions).then(async (connection) => {
+	await (require('./server/lib/db_init')(connection));
 	console.log('Database setup complete...');
 	app.listen(3000, () => console.log('Our Blog is listening on port 3000...'));
 });

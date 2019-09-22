@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 	const Post = sequelize.define('Post', {
 		id: {
 			type: DataTypes.INTEGER,
+			autoIncrement: true,
 			primaryKey: true
 		},
 		title: DataTypes.STRING,
@@ -11,13 +12,14 @@ module.exports = (sequelize, DataTypes) => {
 
 	Post.associate = (models) => {
 		models.Post.belongsTo(models.User, {
-			foreignKey: 'AuthorId',
+			foreignKey: 'authorId',
 			onDelete: 'CASCADE'
 		});
 	};
 
 	Post.associate = (models) => {
 		models.Post.belongsTo(models.Category, {
+			foreignKey: 'categoryId',
 			onDelete: 'CASCADE'
 		});
 	};

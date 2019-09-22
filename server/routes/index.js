@@ -1,21 +1,12 @@
-import express from 'express';
 import path from 'path';
 
-const router = express.Router();
+module.exports = (app) => {
 
-// router.route('/dashboard')
-// 	.get((req, res) => {
-// 		res.sendFile(path.resolve(`${__dirname}/../views/user.html`));
-// 	});
+	require('./post')(app);
 
-// router.route('/')
-// 	.get((req, res) => {
-// 		res.redirect('/dashboard');
-// 	});
+	app.route('*')
+		.get((req, res) => {
+			res.sendFile(path.resolve(`${__dirname}/../views/user.html`));
+		});
 
-router.route('*')
-	.get((req, res) => {
-		res.sendFile(path.resolve(`${__dirname}/../views/user.html`));
-	});
-
-module.exports = router;
+};

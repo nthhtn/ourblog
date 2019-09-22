@@ -11,6 +11,7 @@ class CreatePost extends Component {
 	componentDidMount() {
 		jQuery(function () { One.helpers(['summernote']); });
 	}
+
 	render() {
 		return (
 			<main id="main-container">
