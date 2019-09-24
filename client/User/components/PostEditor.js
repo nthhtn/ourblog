@@ -1,16 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { createPost } from '../actions/Post';
 
-class UpdatePost extends Component {
+var self;
+
+class CreatePost extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {};
+		self = this;
 	}
 
 	componentDidMount() {
 		jQuery(function () { One.helpers(['summernote']); });
 	}
+
+	async createPost() {
+		const id = Date.now();
+		const newpost = Object.assign({}, {
+			title: `Posted at ${id}`,
+			content: `This is a post created at ${id}`,
+			categoryId: 1
+		});
+		await self.props.dispatch(createPost(newpost));
+		self.props.changeMode('view');
+	}
+
 	render() {
 		return (
 			<main id="main-container">
@@ -25,14 +40,12 @@ class UpdatePost extends Component {
 					<div className="block">
 						<div className="block-content block-content-full">
 							<div className="js-summernote"></div>
-							<button type="button" className="btn btn-primary mr-1 mb-3" style={{ marginTop: '15px' }}>
+							<button type="button" className="btn btn-primary mr-1 mb-3" style={{ marginTop: '15px' }} onClick={() => self.createPost()}>
 								<i className="fa fa-plus-square mr-1"></i> Đăng bài
 							</button>
-							<Link to='/posts'>
-								<button type="button" className="btn btn-secondary mr-1 mb-3" style={{ marginTop: '15px' }}>
-									<i className="fa fa-stop-circle mr-1"></i> Hủy
-								</button>
-							</Link>
+							<button type="button" className="btn btn-secondary mr-1 mb-3" style={{ marginTop: '15px' }} onClick={() => self.props.changeMode('view')}>
+								<i className="fa fa-stop-circle mr-1"></i> Hủy
+							</button>
 						</div>
 					</div>
 				</div>
@@ -42,4 +55,4 @@ class UpdatePost extends Component {
 
 }
 
-export default UpdatePost;
+export default CreatePost;

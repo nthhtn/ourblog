@@ -11,7 +11,7 @@ module.exports = (app) => {
 			return res.json({ success: true, result });
 		})
 		.get(async (req, res) => {
-			const result = await Post.findAll({});
+			const result = await Post.findAll({ raw: true });
 			return res.json({ success: true, result });
 		});
 

@@ -1,26 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { createPost, listPost } from '../actions/Post';
+import { listPost } from '../actions/Post';
+import PostEditor from './PostEditor';
 
-var self;
-
-class Post extends Component {
+class PostTable extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {};
-		self = this;
-	}
-
-	createPost() {
-		const id = Date.now();
-		const newpost = Object.assign({}, {
-			title: `Posted at ${id}`,
-			content: `This is a post created at ${id}`,
-			categoryId: 1,
-			authorId: 'c179b4c7-f7cf-4600-be18-da83f3d28b77'
-		});
-		self.props.dispatch(createPost(newpost));
 	}
 
 	render() {
@@ -36,7 +22,7 @@ class Post extends Component {
 				<div className="content">
 					<div className="block">
 						<div className="block-content">
-							<button type="button" className="btn btn-success mr-1 mb-3" onClick={this.createPost.bind(this)}>
+							<button type="button" className="btn btn-success mr-1 mb-3" onClick={() => this.props.changeMode('add')}>
 								<i className="fa fa-fw fa-plus mr-1"></i> Viết bài
 							</button>
 							<div className="table-responsive">
@@ -53,7 +39,8 @@ class Post extends Component {
 									</thead>
 									<tbody>
 										{this.props.post.listPost.map((post) =>
-											<PostItem key={post.id} title={post.title} content={post.content} category={post.category} author={post.author} />
+											<PostItem editPost={this.props.changeMode} key={post.id} title={post.title} content={post.content}
+												category={post.category} author={post.author} {...this.props} />
 										)}
 									</tbody>
 								</table>
@@ -74,6 +61,10 @@ class PostItem extends Component {
 		this.state = {};
 	}
 
+	editPost(){
+		this.props.changeMode('edit');
+	}
+
 	render() {
 		return (
 			<tr>
@@ -84,7 +75,8 @@ class PostItem extends Component {
 				<td className="text-center">{this.props.author}</td>
 				<td className="text-center">
 					<div className="btn-group">
-						<button type="button" className="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit">
+						<button onClick={() => this.editPost()}
+							type="button" className="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit">
 							<i className="fa fa-fw fa-pencil-alt"></i>
 						</button>
 						<button type="button" className="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Delete">
@@ -94,6 +86,32 @@ class PostItem extends Component {
 				</td>
 			</tr>
 		);
+	}
+
+}
+
+class Post extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			mode: 'view',
+			data: null
+		};
+		this.changeMode = this.changeMode.bind(this);
+	}
+
+	componentDidMount() {
+		this.props.dispatch(listPost());
+	}
+
+	changeMode(mode) {
+		this.setState({ mode });
+	}
+
+	render() {
+		return this.state.mode === 'view' ?
+			(<PostTable changeMode={this.changeMode} {...this.props} />) : (<PostEditor changeMode={this.changeMode} {...this.props} />);
 	}
 
 }
