@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { createPost } from '../actions/Post';
+import { createPost, updatePost } from '../actions/Post';
 
 var self;
 
-class CreatePost extends Component {
+class PostEditor extends Component {
 
 	constructor(props) {
 		super(props);
@@ -12,7 +12,10 @@ class CreatePost extends Component {
 	}
 
 	componentDidMount() {
-		jQuery(function () { One.helpers(['summernote']); });
+		jQuery(() => {
+			One.helpers(['summernote']);
+			$('#summernote').summernote('code', self.props.postContent);
+		});
 	}
 
 	async createPost() {
@@ -23,7 +26,14 @@ class CreatePost extends Component {
 			categoryId: 1
 		});
 		await self.props.dispatch(createPost(newpost));
-		self.props.changeMode('view');
+		self.props.changeMode('view', { id: null, title: '', content: '', category: null });
+	}
+
+	async updatePost() {
+		const id = self.props.postId;
+		const content = `${self.props.postContent}\n and updated at ${Date.now()}`;
+		await self.props.dispatch(updatePost(id, { content }));
+		self.props.changeMode('view', { id: null, title: '', content: '', category: null });
 	}
 
 	render() {
@@ -39,13 +49,14 @@ class CreatePost extends Component {
 				<div className="content">
 					<div className="block">
 						<div className="block-content block-content-full">
-							<div className="js-summernote"></div>
-							<button type="button" className="btn btn-primary mr-1 mb-3" style={{ marginTop: '15px' }} onClick={() => self.createPost()}>
+							<button type="button" className="btn btn-primary mr-1 mb-3"
+								onClick={this.props.editorMode === 'add' ? this.createPost : this.updatePost}>
 								<i className="fa fa-plus-square mr-1"></i> Đăng bài
 							</button>
-							<button type="button" className="btn btn-secondary mr-1 mb-3" style={{ marginTop: '15px' }} onClick={() => self.props.changeMode('view')}>
+							<button type="button" className="btn btn-secondary mr-1 mb-3" onClick={() => this.props.changeMode('view')}>
 								<i className="fa fa-stop-circle mr-1"></i> Hủy
 							</button>
+							<div className="js-summernote" id="summernote"></div>
 						</div>
 					</div>
 				</div>
@@ -55,4 +66,4 @@ class CreatePost extends Component {
 
 }
 
-export default CreatePost;
+export default PostEditor;
