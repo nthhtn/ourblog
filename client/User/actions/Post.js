@@ -36,25 +36,25 @@ export function updatePost(id, data) {
 			body: JSON.stringify(data)
 		});
 		const responseJson = await response.json();
-		dispatch(updatePostSuccess(responseJson.result));
+		dispatch(updatePostSuccess(id, data));
 	};
 }
 
-export function updatePostSuccess(post) {
-	return { type: 'UPDATE_POST_SUCCESS', post };
+export function updatePostSuccess(id, data) {
+	return { type: 'UPDATE_POST_SUCCESS', id, data };
 }
 
-// export function deletePost(id, data) {
-// 	return async (dispatch) => {
-// 		const response = await fetch(`/api/posts/${id}`, {
-// 			credentials: 'same-origin',
-// 			method: 'delete'
-// 		});
-// 		const responseJson = await response.json();
-// 		dispatch(deletePostSuccess(responseJson));
-// 	};
-// }
+export function deletePost(id) {
+	return async (dispatch) => {
+		const response = await fetch(`/api/posts/${id}`, {
+			credentials: 'same-origin',
+			method: 'delete'
+		});
+		const responseJson = await response.json();
+		dispatch(deletePostSuccess(id));
+	};
+}
 
-// export function deletePostSuccess(list) {
-// 	return { type: 'DELETE_POST_SUCCESS', list };
-// }
+export function deletePostSuccess(id) {
+	return { type: 'DELETE_POST_SUCCESS', id };
+}

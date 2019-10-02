@@ -20,17 +20,19 @@ module.exports = (app) => {
 			const { id } = req.params;
 			try {
 				await Post.update(req.body, { where: { id } });
-				const result = await Post.findAll({ where: { id } }, { raw: true });
-				return res.json({ success: true, result: result[0] });
+				return res.json({ success: true });
 			} catch (error) {
 				return res.json({ success: true, error: error.message });
 			}
 		})
 		.delete(async (req, res) => {
 			const { id } = req.params;
-			const result = await Post.destroy({ where: { id } }, { raw: true })
-			console.log(result);
-			return res.json({ success: true });
+			try {
+				await Post.destroy({ where: { id } });
+				return res.json({ success: true });
+			} catch (error) {
+				return res.json({ success: true, error: error.message });
+			}
 		});
 
 	app.use('/api/posts', router);

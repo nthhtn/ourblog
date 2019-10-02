@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { listPost } from '../actions/Post';
+import { listPost, deletePost } from '../actions/Post';
 import PostEditor from './PostEditor';
 
 class PostTable extends Component {
@@ -73,6 +73,11 @@ class PostItem extends Component {
 		this.props.editPost('edit', data);
 	}
 
+	async deletePost() {
+		const id = this.props.postId;
+		await this.props.dispatch(deletePost(id));
+	}
+
 	render() {
 		return (
 			<tr>
@@ -87,7 +92,7 @@ class PostItem extends Component {
 							className="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit">
 							<i className="fa fa-fw fa-pencil-alt"></i>
 						</button>
-						<button type="button"
+						<button type="button" onClick={this.deletePost.bind(this)}
 							className="btn btn-sm btn-primary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Delete">
 							<i className="fa fa-fw fa-times"></i>
 						</button>
