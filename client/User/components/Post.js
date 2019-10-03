@@ -9,6 +9,10 @@ class PostTable extends Component {
 		this.state = {};
 	}
 
+	async deletePost(id) {
+		await this.props.dispatch(deletePost(id));
+	}
+
 	render() {
 		return (
 			<main id="main-container">
@@ -40,8 +44,10 @@ class PostTable extends Component {
 									</thead>
 									<tbody>
 										{this.props.post.listPost.map((post) =>
-											<PostItem editPost={this.props.changeMode} key={`post-${post.id}`} postId={post.id}
-												title={post.title} content={post.content} category={post.category} author={post.author} {...this.props} />
+											<PostItem editPost={this.props.changeMode} deletePost={this.deletePost.bind(this)}
+												key={`post-${post.id}`} postId={post.id}
+												title={post.title} content={post.content} category={post.category} author={post.author}
+												{...this.props} />
 										)}
 									</tbody>
 								</table>
@@ -60,7 +66,6 @@ class PostItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-
 	}
 
 	editPost() {
@@ -75,7 +80,7 @@ class PostItem extends Component {
 
 	async deletePost() {
 		const id = this.props.postId;
-		await this.props.dispatch(deletePost(id));
+		this.props.deletePost(id);
 	}
 
 	render() {
