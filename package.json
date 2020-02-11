@@ -30,6 +30,7 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.18.1",
+    "sweetalert2": "^9.5.4",
     "webpack": "^4.39.2",
     "webpack-hot-middleware": "^2.25.0"
   },

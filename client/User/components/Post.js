@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { listPost, deletePost } from '../actions/Post';
 import PostEditor from './PostEditor';
+import swal from 'sweetalert2';
 
 class PostTable extends Component {
 
@@ -19,7 +20,7 @@ class PostTable extends Component {
 				<div className="bg-body-light">
 					<div className="content content-full">
 						<div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-							<h1 className="flex-sm-fill h3 my-2">Danh sách bài viết</h1>
+							<h1 className="flex-sm-fill h3 my-2">List of blog post</h1>
 						</div>
 					</div>
 				</div>
@@ -28,7 +29,7 @@ class PostTable extends Component {
 						<div className="block-content">
 							<button type="button" className="btn btn-success mr-1 mb-3"
 								onClick={() => this.props.changeMode('add')}>
-								<i className="fa fa-fw fa-plus mr-1"></i> Viết bài
+								<i className="fa fa-fw fa-plus mr-1"></i> Write a blog post
 							</button>
 							<div className="table-responsive">
 								<table className="table table-bordered table-striped table-vcenter">
@@ -79,8 +80,27 @@ class PostItem extends Component {
 	}
 
 	async deletePost() {
-		const id = this.props.postId;
-		this.props.deletePost(id);
+		const { postId, title } = this.props;
+		const swalWithBootstrapButtons = swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+		});
+		swalWithBootstrapButtons.fire({
+			title: 'Are you sure?',
+			text: `Post "${title}" will be permanently deleted!`,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes',
+			cancelButtonText: 'No',
+			reverseButtons: true
+		}).then((result) => {
+			if (result.value) {
+				this.props.deletePost(postId);
+			}
+		});
 	}
 
 	render() {
@@ -109,7 +129,7 @@ class PostItem extends Component {
 
 }
 
-class Post extends Component {
+export default class Post extends Component {
 
 	constructor(props) {
 		super(props);
@@ -134,5 +154,3 @@ class Post extends Component {
 	}
 
 }
-
-export default Post;
