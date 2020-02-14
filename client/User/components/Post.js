@@ -44,12 +44,12 @@ class PostTable extends Component {
 										</tr>
 									</thead>
 									<tbody>
-										{this.props.post.listPost.map((post) =>
-											<PostItem editPost={this.props.changeMode} deletePost={this.deletePost.bind(this)}
-												key={`post-${post.id}`} postId={post.id}
-												title={post.title} content={post.content} category={post.category} author={post.author}
-												{...this.props} />
-										)}
+										{this.props.post.listPost.map((post) => {
+											const { id, title, content, category, author } = post;
+											return (<PostItem editPost={this.props.changeMode} deletePost={this.deletePost.bind(this)}
+												key={`post-${id}`} postId={id} title={title} content={content} category={category}
+												author={author} {...this.props} />);
+										})}
 									</tbody>
 								</table>
 							</div>

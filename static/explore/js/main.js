@@ -238,7 +238,6 @@ AOS.init({
 	};
 	contentWayPoint();
 
-
 	// navigation
 	var OnePageNav = function () {
 		$(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
@@ -299,8 +298,6 @@ AOS.init({
 	// 	'format': 'm/d/yyyy',
 	// 	'autoclose': true
 	// });
-
-
 
 
 })(jQuery);

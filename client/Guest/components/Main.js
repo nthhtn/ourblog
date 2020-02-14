@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Home from './Home';
+import About from './About';
+import Post from './Post';
 
 class Main extends Component {
 
@@ -14,6 +16,8 @@ class Main extends Component {
 	render() {
 		return (
 			<Switch>
+				<Route path='/about' component={About} />
+				<Route path='/post' component={Post} />
 				<Route path='*' component={Home} />
 			</Switch>
 		);
