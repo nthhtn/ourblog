@@ -1,37 +1,29 @@
-module.exports = (sequelize, DataTypes) => {
+import { Schema, model } from 'mongoose';
 
-	const User = sequelize.define('User', {
-		id: {
-			type: DataTypes.UUID,
-			primaryKey: true,
-			defaultValue: DataTypes.UUIDV4
-		},
-		email: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true
-		},
-		username: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true
-		},
-		salt: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true
-		},
-		password: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true
-		}
-	});
+const userSchema = new Schema({
+	username: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	email: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	password: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	salt: {
+		type: String,
+		required: true
+	},
+	fullName: {
+		type: String,
+		required: true
+	}
+});
 
-	User.associate = (models) => {
-		models.User.hasMany(models.Post, { foreignKey: 'authorId' });
-	};
-
-	return User;
-
-};
+export default model('User', userSchema);

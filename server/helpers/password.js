@@ -7,3 +7,7 @@ export function sha512HashPassword(password) {
 	hash.update(password);
 	return { salt, password: hash.digest('hex') };
 };
+
+export function generateSalt(length = 16) {
+	return crypto.randomBytes(length).toString('hex');
+};

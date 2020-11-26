@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import Post from './Post';
+import ArticleView from './Article';
 
 class Main extends Component {
 
@@ -15,8 +15,9 @@ class Main extends Component {
 	render() {
 		return (
 			<Switch>
-				<Route exact path='/dashboard' component={Home} />
-				<Route path='/dashboard/posts' render={() => (<Post {...this.props} />)} />
+			<Route exact path='/dashboard/articles' render={() => (<ArticleView {...this.props} />)} />
+			<Route path='/dashboard' component={Home} />
+			<Route path='/dashboard/*' component={Home} />
 			</Switch>
 		);
 	}

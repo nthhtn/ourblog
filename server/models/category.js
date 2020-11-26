@@ -1,23 +1,15 @@
-module.exports = (sequelize, DataTypes) => {
+import { Schema, model } from 'mongoose';
 
-	const Category = sequelize.define('Category', {
-		id: {
-			type: DataTypes.INTEGER,
-			autoIncrement: true,
-			primaryKey: true
-		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			unique: true
-		},
-		displayName: DataTypes.STRING
-	});
+const categorySchema = new Schema({
+	name: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	displayName: {
+		type: String,
+		required: true
+	}
+});
 
-	Category.associate = (models) => {
-		models.Category.hasMany(models.Post, { foreignKey: 'categoryId' });
-	};
-
-	return Category;
-
-};
+export default model('Category', categorySchema);

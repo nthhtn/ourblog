@@ -3,12 +3,31 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import webpack from 'webpack';
-import db from './server/models';
+import passport from 'passport';
+import { connect } from 'mongoose';
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(session({
+	secret: 'ourblog_ts',
+	resave: false,
+	saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+	console.log('serialize');
+	return done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+	console.log('deserialize');
+	return done(null, user);
+});
 
 app.use('/assets', express.static(`${__dirname}/static`));
 
@@ -22,12 +41,17 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 
-require('./server/routes')(app);
+const mongoURI = 'mongodb://localhost/ourblog_ts';
+const options = {
+	useNewUrlParser: true,
+	useCreateIndex: true,
+	useFindAndModify: false,
+	useUnifiedTopology: true,
+};
+connect(mongoURI, options).then(() => {
+	console.log('MongoDB Connected...');
 
-const syncOptions = {};
-// const syncOptions = { force: true };
-db.sequelize.sync(syncOptions).then(async (connection) => {
-	await (require('./server/lib/db_init')(connection));
-	console.log('Database setup complete...');
-	app.listen(3000, () => console.log('Our Blog is listening on port 3000...'));
+	require('./server/routes')(app);
+
+	app.listen(5000, () => console.log(`Server started on port 5000`));
 });

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import Pagination from 'react-js-pagination';
+import ReactHtmlParser from 'react-html-parser';
+
+import { listArticles } from '../actions/article';
 
 class ArticleItem extends Component {
 
@@ -9,22 +15,29 @@ class ArticleItem extends Component {
 	}
 
 	render() {
+		const { _id, title, content, coverImg, createdAt } = this.props;
 		return (
 			<div className="col-md-12">
-				<div className="blog-entry ftco-animate">
-					<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/image_1.jpg")' }}></Link>
+				<div className="blog-entry ftco-animate fadeInUp ftco-animated">
+					<Link to={`/articles/${title}`} className="img"
+						style={{
+							backgroundImage: `url(${coverImg})`, backgroundSize: 'cover',
+							backgroundRepeat: 'no-repeat', backgroundPosition: 'center center'
+						}}></Link>
 					<div className="text pt-2 mt-5">
-						<h3 className="mb-4"><Link to="#">Hawaii known as the Big Island</Link></h3>
-						<p className="mb-4">Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+						<h3 className="mb-4"><Link to={`/articles/${title}`}>{title}</Link></h3>
+						<div className="mb-4">
+							{ReactHtmlParser(content)}
+						</div>
 						<div className="author mb-4 d-flex align-items-center">
 							<Link to="#" className="img" style={{ backgroundImage: 'url("/assets/explore/images/person_1.jpg")' }}></Link>
 							<div className="ml-3 info">
-								<h3><Link to="#">Dave Lewis</Link>, <span>October 04, 2018</span></h3>
+								<h3><Link to="#">Dave Lewis</Link>, <span>{createdAt}</span></h3>
 							</div>
 						</div>
 						<div className="meta-wrap d-md-flex align-items-center">
 							<div className="half">
-								<p><Link to="#" className="btn btn-primary p-3 px-xl-4 py-xl-3">Continue Reading</Link></p>
+								<p><Link to={`/articles/${title}`} className="btn btn-primary p-3 px-xl-4 py-xl-3">Continue Reading</Link></p>
 							</div>
 						</div>
 					</div>
@@ -140,6 +153,7 @@ export default class Home extends Component {
 		// 	}, { offset: '95%' });
 		// };
 		// contentWayPoint();
+		this.props.dispatch(listArticles());
 	}
 
 	render() {
@@ -149,7 +163,7 @@ export default class Home extends Component {
 					<div className="row">
 						<div className="col-lg-8">
 							<div className="row">
-								{[1, 2, 3, 4].map((item) => <ArticleItem key={item} />)}
+								{this.props.article.list.map((item) => (<ArticleItem {...item} key={item._id} />))}
 							</div>
 							<div className="row mt-5">
 								<div className="col text-center">

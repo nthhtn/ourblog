@@ -26,7 +26,8 @@ module.exports = {
 				exclude: /node_modules/,
 				include: path.join(__dirname, 'client'),
 				query: { cacheDirectory: true }
-			}
+			},
+			{ test: /\.css$/, loader: 'style-loader!css-loader' }
 		]
 	},
 	node: { fs: 'empty' }

@@ -1,8 +1,22 @@
-require('dotenv').config();
+require('dotenv');
+import { connect } from "mongoose";
 
-module.exports = {
-	name: process.env.DB_NAME,
-	user: process.env.DB_USER,
-	password: process.env.DB_PWD,
-	host: process.env.DB_HOST
+const connectDB = async () => {
+	try {
+		const mongoURI = 'mongodb://localhost/ourblog_ts';
+		const options = {
+			useNewUrlParser: true,
+			useCreateIndex: true,
+			useFindAndModify: false,
+			useUnifiedTopology: true,
+		};
+		await connect(mongoURI, options);
+		console.log("MongoDB Connected...");
+	} catch (err) {
+		console.error(err.message);
+		// Exit process with failure
+		process.exit(1);
+	}
 };
+
+export default connectDB;
